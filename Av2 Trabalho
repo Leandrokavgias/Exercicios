@@ -1,0 +1,1168 @@
+//Questao 1
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+
+// #define ARQUIVO "alunos.dat"
+
+// typedef struct {
+//     int matricula;
+//     char nome[50];
+//     char curso[30];
+//     int idade;
+// } Aluno;
+
+// void incluirAluno() {
+//     Aluno aluno;
+//     FILE *arquivo = fopen(ARQUIVO, "ab");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Número de matrícula: ");
+//     scanf("%d", &aluno.matricula);
+//     getchar(); // Limpar buffer
+//     printf("Nome: ");
+//     fgets(aluno.nome, 50, stdin);
+//     aluno.nome[strcspn(aluno.nome, "\n")] = '\0'; // Remover newline
+//     printf("Curso: ");
+//     fgets(aluno.curso, 30, stdin);
+//     aluno.curso[strcspn(aluno.curso, "\n")] = '\0';
+//     printf("Idade: ");
+//     scanf("%d", &aluno.idade);
+
+//     fwrite(&aluno, sizeof(Aluno), 1, arquivo);
+//     fclose(arquivo);
+//     printf("Aluno cadastrado com sucesso!\n");
+// }
+
+// void alterarAluno() {
+//     int matricula, encontrado = 0;
+//     Aluno aluno;
+//     FILE *arquivo = fopen(ARQUIVO, "rb+");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o número de matrícula do aluno a ser alterado: ");
+//     scanf("%d", &matricula);
+//     while (fread(&aluno, sizeof(Aluno), 1, arquivo)) {
+//         if (aluno.matricula == matricula) {
+//             encontrado = 1;
+//             printf("Novo nome: ");
+//             getchar(); // Limpar buffer
+//             fgets(aluno.nome, 50, stdin);
+//             aluno.nome[strcspn(aluno.nome, "\n")] = '\0';
+//             printf("Novo curso: ");
+//             fgets(aluno.curso, 30, stdin);
+//             aluno.curso[strcspn(aluno.curso, "\n")] = '\0';
+//             printf("Nova idade: ");
+//             scanf("%d", &aluno.idade);
+
+//             fseek(arquivo, -sizeof(Aluno), SEEK_CUR);
+//             fwrite(&aluno, sizeof(Aluno), 1, arquivo);
+//             printf("Aluno alterado com sucesso!\n");
+//             break;
+//         }
+//     }
+//     fclose(arquivo);
+//     if (!encontrado) {
+//         printf("Aluno não encontrado.\n");
+//     }
+// }
+
+// void excluirAluno() {
+//     int matricula, encontrado = 0;
+//     Aluno aluno;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     FILE *temp = fopen("temp.dat", "wb");
+//     if (!arquivo || !temp) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o número de matrícula do aluno a ser excluído: ");
+//     scanf("%d", &matricula);
+//     while (fread(&aluno, sizeof(Aluno), 1, arquivo)) {
+//         if (aluno.matricula == matricula) {
+//             encontrado = 1;
+//             continue; // Não copia o registro excluído
+//         }
+//         fwrite(&aluno, sizeof(Aluno), 1, temp);
+//     }
+//     fclose(arquivo);
+//     fclose(temp);
+
+//     remove(ARQUIVO);
+//     rename("temp.dat", ARQUIVO);
+
+//     if (encontrado) {
+//         printf("Aluno excluído com sucesso!\n");
+//     } else {
+//         printf("Aluno não encontrado.\n");
+//     }
+// }
+
+// void consultarAluno() {
+//     int matricula, encontrado = 0;
+//     Aluno aluno;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o número de matrícula do aluno: ");
+//     scanf("%d", &matricula);
+//     while (fread(&aluno, sizeof(Aluno), 1, arquivo)) {
+//         if (aluno.matricula == matricula) {
+//             encontrado = 1;
+//             printf("\nMatrícula: %d\n", aluno.matricula);
+//             printf("Nome: %s\n", aluno.nome);
+//             printf("Curso: %s\n", aluno.curso);
+//             printf("Idade: %d\n", aluno.idade);
+//             break;
+//         }
+//     }
+//     fclose(arquivo);
+//     if (!encontrado) {
+//         printf("Aluno não encontrado.\n");
+//     }
+// }
+
+// void listarAlunos() {
+//     Aluno aluno;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("\nLista de alunos cadastrados:\n");
+//     while (fread(&aluno, sizeof(Aluno), 1, arquivo)) {
+//         printf("\nMatrícula: %d\n", aluno.matricula);
+//         printf("Nome: %s\n", aluno.nome);
+//         printf("Curso: %s\n", aluno.curso);
+//         printf("Idade: %d\n", aluno.idade);
+//     }
+//     fclose(arquivo);
+// }
+
+// int main() {
+//     int opcao;
+//     do {
+//         printf("\nSistema de Gerenciamento de Alunos\n");
+//         printf("1. Incluir aluno\n");
+//         printf("2. Alterar aluno\n");
+//         printf("3. Excluir aluno\n");
+//         printf("4. Consultar aluno\n");
+//         printf("5. Listar alunos\n");
+//         printf("6. Sair\n");
+//         printf("Escolha uma opção: ");
+//         scanf("%d", &opcao);
+
+//         switch (opcao) {
+//             case 1:
+//                 incluirAluno();
+//                 break;
+//             case 2:
+//                 alterarAluno();
+//                 break;
+//             case 3:
+//                 excluirAluno();
+//                 break;
+//             case 4:
+//                 consultarAluno();
+//                 break;
+//             case 5:
+//                 listarAlunos();
+//                 break;
+//             case 6:
+//                 printf("Encerrando o programa.\n");
+//                 break;
+//             default:
+//                 printf("Opção inválida.\n");
+//         }
+//     } while (opcao != 6);
+
+//     return 0;
+// }
+
+//Questao 2
+
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+
+// #define ARQUIVO "funcionarios.dat"
+
+// typedef struct {
+//     int id;
+//     char nome[50];
+//     char cargo[30];
+//     int salario;
+// } Funcionario;
+
+// void cadastrarFuncionario() {
+//     Funcionario funcionario;
+//     FILE *arquivo = fopen(ARQUIVO, "ab");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("ID do funcionário: ");
+//     scanf("%d", &funcionario.id);
+//     getchar(); // Limpar buffer
+//     printf("Nome: ");
+//     fgets(funcionario.nome, 50, stdin);
+//     funcionario.nome[strcspn(funcionario.nome, "\n")] = '\0';
+//     printf("Cargo: ");
+//     fgets(funcionario.cargo, 30, stdin);
+//     funcionario.cargo[strcspn(funcionario.cargo, "\n")] = '\0';
+//     printf("Salário: ");
+//     scanf("%d", &funcionario.salario);
+
+//     fwrite(&funcionario, sizeof(Funcionario), 1, arquivo);
+//     fclose(arquivo);
+//     printf("Funcionário cadastrado com sucesso!\n");
+// }
+
+// void alterarFuncionario() {
+//     int id, encontrado = 0;
+//     Funcionario funcionario;
+//     FILE *arquivo = fopen(ARQUIVO, "rb+");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o ID do funcionário a ser alterado: ");
+//     scanf("%d", &id);
+//     while (fread(&funcionario, sizeof(Funcionario), 1, arquivo)) {
+//         if (funcionario.id == id) {
+//             encontrado = 1;
+//             printf("Novo cargo: ");
+//             getchar(); // Limpar buffer
+//             fgets(funcionario.cargo, 30, stdin);
+//             funcionario.cargo[strcspn(funcionario.cargo, "\n")] = '\0';
+//             printf("Novo salário: ");
+//             scanf("%d", &funcionario.salario);
+
+//             fseek(arquivo, -sizeof(Funcionario), SEEK_CUR);
+//             fwrite(&funcionario, sizeof(Funcionario), 1, arquivo);
+//             printf("Funcionário alterado com sucesso!\n");
+//             break;
+//         }
+//     }
+//     fclose(arquivo);
+//     if (!encontrado) {
+//         printf("Funcionário não encontrado.\n");
+//     }
+// }
+
+// void excluirFuncionario() {
+//     int id, encontrado = 0;
+//     Funcionario funcionario;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     FILE *temp = fopen("temp.dat", "wb");
+//     if (!arquivo || !temp) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o ID do funcionário a ser excluído: ");
+//     scanf("%d", &id);
+//     while (fread(&funcionario, sizeof(Funcionario), 1, arquivo)) {
+//         if (funcionario.id == id) {
+//             encontrado = 1;
+//             continue; // Não copia o registro excluído
+//         }
+//         fwrite(&funcionario, sizeof(Funcionario), 1, temp);
+//     }
+//     fclose(arquivo);
+//     fclose(temp);
+
+//     remove(ARQUIVO);
+//     rename("temp.dat", ARQUIVO);
+
+//     if (encontrado) {
+//         printf("Funcionário excluído com sucesso!\n");
+//     } else {
+//         printf("Funcionário não encontrado.\n");
+//     }
+// }
+
+// void consultarFuncionario() {
+//     int id, encontrado = 0;
+//     Funcionario funcionario;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o ID do funcionário: ");
+//     scanf("%d", &id);
+//     while (fread(&funcionario, sizeof(Funcionario), 1, arquivo)) {
+//         if (funcionario.id == id) {
+//             encontrado = 1;
+//             printf("\nID: %d\n", funcionario.id);
+//             printf("Nome: %s\n", funcionario.nome);
+//             printf("Cargo: %s\n", funcionario.cargo);
+//             printf("Salário: R$ %d\n", funcionario.salario);
+//             break;
+//         }
+//     }
+//     fclose(arquivo);
+//     if (!encontrado) {
+//         printf("Funcionário não encontrado.\n");
+//     }
+// }
+
+// void listarFuncionarios() {
+//     Funcionario funcionario;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("\nLista de funcionários cadastrados:\n");
+//     while (fread(&funcionario, sizeof(Funcionario), 1, arquivo)) {
+//         printf("\nID: %d\n", funcionario.id);
+//         printf("Nome: %s\n", funcionario.nome);
+//         printf("Cargo: %s\n", funcionario.cargo);
+//         printf("Salário: R$ %d\n", funcionario.salario);
+//     }
+//     fclose(arquivo);
+// }
+
+// int main() {
+//     int opcao;
+//     do {
+//         printf("\nSistema de Cadastro de Funcionários\n");
+//         printf("1. Cadastrar funcionário\n");
+//         printf("2. Alterar funcionário\n");
+//         printf("3. Excluir funcionário\n");
+//         printf("4. Consultar funcionário\n");
+//         printf("5. Listar funcionários\n");
+//         printf("6. Sair\n");
+//         printf("Escolha uma opção: ");
+//         scanf("%d", &opcao);
+
+//         switch (opcao) {
+//             case 1:
+//                 cadastrarFuncionario();
+//                 break;
+//             case 2:
+//                 alterarFuncionario();
+//                 break;
+//             case 3:
+//                 excluirFuncionario();
+//                 break;
+//             case 4:
+//                 consultarFuncionario();
+//                 break;
+//             case 5:
+//                 listarFuncionarios();
+//                 break;
+//             case 6:
+//                 printf("Encerrando o programa.\n");
+//                 break;
+//             default:
+//                 printf("Opção inválida.\n");
+//         }
+//     } while (opcao != 6);
+
+//     return 0;
+// }
+
+// Questao 3
+
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+
+// #define ARQUIVO "catalogo_livros.dat"
+
+// typedef struct {
+//     int codigo;
+//     char titulo[50];
+//     char autor[50];
+//     int ano;
+// } Livro;
+
+// void adicionarLivro() {
+//     Livro livro;
+//     FILE *arquivo = fopen(ARQUIVO, "ab");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Código do livro: ");
+//     scanf("%d", &livro.codigo);
+//     getchar(); // Limpar buffer
+//     printf("Título: ");
+//     fgets(livro.titulo, 50, stdin);
+//     livro.titulo[strcspn(livro.titulo, "\n")] = '\0';
+//     printf("Autor: ");
+//     fgets(livro.autor, 50, stdin);
+//     livro.autor[strcspn(livro.autor, "\n")] = '\0';
+//     printf("Ano de publicação: ");
+//     scanf("%d", &livro.ano);
+
+//     fwrite(&livro, sizeof(Livro), 1, arquivo);
+//     fclose(arquivo);
+//     printf("Livro adicionado com sucesso!\n");
+// }
+
+// void alterarLivro() {
+//     int codigo, encontrado = 0;
+//     Livro livro;
+//     FILE *arquivo = fopen(ARQUIVO, "rb+");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o código do livro a ser alterado: ");
+//     scanf("%d", &codigo);
+//     while (fread(&livro, sizeof(Livro), 1, arquivo)) {
+//         if (livro.codigo == codigo) {
+//             encontrado = 1;
+//             printf("Novo título: ");
+//             getchar(); // Limpar buffer
+//             fgets(livro.titulo, 50, stdin);
+//             livro.titulo[strcspn(livro.titulo, "\n")] = '\0';
+//             printf("Novo autor: ");
+//             fgets(livro.autor, 50, stdin);
+//             livro.autor[strcspn(livro.autor, "\n")] = '\0';
+//             printf("Novo ano de publicação: ");
+//             scanf("%d", &livro.ano);
+
+//             fseek(arquivo, -sizeof(Livro), SEEK_CUR);
+//             fwrite(&livro, sizeof(Livro), 1, arquivo);
+//             printf("Livro alterado com sucesso!\n");
+//             break;
+//         }
+//     }
+//     fclose(arquivo);
+//     if (!encontrado) {
+//         printf("Livro não encontrado.\n");
+//     }
+// }
+
+// void excluirLivro() {
+//     int codigo, encontrado = 0;
+//     Livro livro;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     FILE *temp = fopen("temp.dat", "wb");
+//     if (!arquivo || !temp) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o código do livro a ser excluído: ");
+//     scanf("%d", &codigo);
+//     while (fread(&livro, sizeof(Livro), 1, arquivo)) {
+//         if (livro.codigo == codigo) {
+//             encontrado = 1;
+//             continue; // Não copia o registro excluído
+//         }
+//         fwrite(&livro, sizeof(Livro), 1, temp);
+//     }
+//     fclose(arquivo);
+//     fclose(temp);
+
+//     remove(ARQUIVO);
+//     rename("temp.dat", ARQUIVO);
+
+//     if (encontrado) {
+//         printf("Livro excluído com sucesso!\n");
+//     } else {
+//         printf("Livro não encontrado.\n");
+//     }
+// }
+
+// void consultarLivro() {
+//     int codigo, encontrado = 0;
+//     Livro livro;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o código do livro: ");
+//     scanf("%d", &codigo);
+//     while (fread(&livro, sizeof(Livro), 1, arquivo)) {
+//         if (livro.codigo == codigo) {
+//             encontrado = 1;
+//             printf("\nCódigo: %d\n", livro.codigo);
+//             printf("Título: %s\n", livro.titulo);
+//             printf("Autor: %s\n", livro.autor);
+//             printf("Ano de publicação: %d\n", livro.ano);
+//             break;
+//         }
+//     }
+//     fclose(arquivo);
+//     if (!encontrado) {
+//         printf("Livro não encontrado.\n");
+//     }
+// }
+
+// void listarLivros() {
+//     Livro livro;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("\nLista de livros cadastrados:\n");
+//     while (fread(&livro, sizeof(Livro), 1, arquivo)) {
+//         printf("\nCódigo: %d\n", livro.codigo);
+//         printf("Título: %s\n", livro.titulo);
+//         printf("Autor: %s\n", livro.autor);
+//         printf("Ano de publicação: %d\n", livro.ano);
+//     }
+//     fclose(arquivo);
+// }
+
+// int main() {
+//     int opcao;
+//     do {
+//         printf("\nSistema de Gerenciamento de Livros\n");
+//         printf("1. Adicionar livro\n");
+//         printf("2. Alterar livro\n");
+//         printf("3. Excluir livro\n");
+//         printf("4. Consultar livro\n");
+//         printf("5. Listar livros\n");
+//         printf("6. Sair\n");
+//         printf("Escolha uma opção: ");
+//         scanf("%d", &opcao);
+
+//         switch (opcao) {
+//             case 1:
+//                 adicionarLivro();
+//                 break;
+//             case 2:
+//                 alterarLivro();
+//                 break;
+//             case 3:
+//                 excluirLivro();
+//                 break;
+//             case 4:
+//                 consultarLivro();
+//                 break;
+//             case 5:
+//                 listarLivros();
+//                 break;
+//             case 6:
+//                 printf("Encerrando o programa.\n");
+//                 break;
+//             default:
+//                 printf("Opção inválida.\n");
+//         }
+//     } while (opcao != 6);
+
+//     return 0;
+// }
+
+// Questao 4
+
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+
+// #define ARQUIVO "veiculos.dat"
+
+// typedef struct {
+//     int id;
+//     char modelo[50];
+//     char placa[10];
+//     int ano;
+// } Veiculo;
+
+// void adicionarVeiculo() {
+//     Veiculo veiculo;
+//     FILE *arquivo = fopen(ARQUIVO, "ab");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("ID do veículo: ");
+//     scanf("%d", &veiculo.id);
+//     getchar(); // Limpar buffer
+//     printf("Modelo: ");
+//     fgets(veiculo.modelo, 50, stdin);
+//     veiculo.modelo[strcspn(veiculo.modelo, "\n")] = '\0';
+//     printf("Placa: ");
+//     fgets(veiculo.placa, 10, stdin);
+//     veiculo.placa[strcspn(veiculo.placa, "\n")] = '\0';
+//     printf("Ano de fabricação: ");
+//     scanf("%d", &veiculo.ano);
+
+//     fwrite(&veiculo, sizeof(Veiculo), 1, arquivo);
+//     fclose(arquivo);
+//     printf("Veículo adicionado com sucesso!\n");
+// }
+
+// void alterarVeiculo() {
+//     int id, encontrado = 0;
+//     Veiculo veiculo;
+//     FILE *arquivo = fopen(ARQUIVO, "rb+");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o ID do veículo a ser alterado: ");
+//     scanf("%d", &id);
+//     while (fread(&veiculo, sizeof(Veiculo), 1, arquivo)) {
+//         if (veiculo.id == id) {
+//             encontrado = 1;
+//             printf("Novo modelo: ");
+//             getchar(); // Limpar buffer
+//             fgets(veiculo.modelo, 50, stdin);
+//             veiculo.modelo[strcspn(veiculo.modelo, "\n")] = '\0';
+//             printf("Nova placa: ");
+//             fgets(veiculo.placa, 10, stdin);
+//             veiculo.placa[strcspn(veiculo.placa, "\n")] = '\0';
+//             printf("Novo ano de fabricação: ");
+//             scanf("%d", &veiculo.ano);
+
+//             fseek(arquivo, -sizeof(Veiculo), SEEK_CUR);
+//             fwrite(&veiculo, sizeof(Veiculo), 1, arquivo);
+//             printf("Veículo alterado com sucesso!\n");
+//             break;
+//         }
+//     }
+//     fclose(arquivo);
+//     if (!encontrado) {
+//         printf("Veículo não encontrado.\n");
+//     }
+// }
+
+// void excluirVeiculo() {
+//     int id, encontrado = 0;
+//     Veiculo veiculo;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     FILE *temp = fopen("temp.dat", "wb");
+//     if (!arquivo || !temp) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o ID do veículo a ser excluído: ");
+//     scanf("%d", &id);
+//     while (fread(&veiculo, sizeof(Veiculo), 1, arquivo)) {
+//         if (veiculo.id == id) {
+//             encontrado = 1;
+//             continue; // Não copia o registro excluído
+//         }
+//         fwrite(&veiculo, sizeof(Veiculo), 1, temp);
+//     }
+//     fclose(arquivo);
+//     fclose(temp);
+
+//     remove(ARQUIVO);
+//     rename("temp.dat", ARQUIVO);
+
+//     if (encontrado) {
+//         printf("Veículo excluído com sucesso!\n");
+//     } else {
+//         printf("Veículo não encontrado.\n");
+//     }
+// }
+
+// void consultarVeiculo() {
+//     char placa[10];
+//     int encontrado = 0;
+//     Veiculo veiculo;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe a placa do veículo: ");
+//     getchar(); // Limpar buffer
+//     fgets(placa, 10, stdin);
+//     placa[strcspn(placa, "\n")] = '\0';
+
+//     while (fread(&veiculo, sizeof(Veiculo), 1, arquivo)) {
+//         if (strcmp(veiculo.placa, placa) == 0) {
+//             encontrado = 1;
+//             printf("\nID: %d\n", veiculo.id);
+//             printf("Modelo: %s\n", veiculo.modelo);
+//             printf("Placa: %s\n", veiculo.placa);
+//             printf("Ano de fabricação: %d\n", veiculo.ano);
+//             break;
+//         }
+//     }
+//     fclose(arquivo);
+//     if (!encontrado) {
+//         printf("Veículo não encontrado.\n");
+//     }
+// }
+
+// void listarVeiculos() {
+//     Veiculo veiculo;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("\nLista de veículos cadastrados:\n");
+//     while (fread(&veiculo, sizeof(Veiculo), 1, arquivo)) {
+//         printf("\nID: %d\n", veiculo.id);
+//         printf("Modelo: %s\n", veiculo.modelo);
+//         printf("Placa: %s\n", veiculo.placa);
+//         printf("Ano de fabricação: %d\n", veiculo.ano);
+//     }
+//     fclose(arquivo);
+// }
+
+// int main() {
+//     int opcao;
+//     do {
+//         printf("\nSistema de Registro de Veículos\n");
+//         printf("1. Adicionar veículo\n");
+//         printf("2. Alterar veículo\n");
+//         printf("3. Excluir veículo\n");
+//         printf("4. Consultar veículo pela placa\n");
+//         printf("5. Listar veículos\n");
+//         printf("6. Sair\n");
+//         printf("Escolha uma opção: ");
+//         scanf("%d", &opcao);
+
+//         switch (opcao) {
+//             case 1:
+//                 adicionarVeiculo();
+//                 break;
+//             case 2:
+//                 alterarVeiculo();
+//                 break;
+//             case 3:
+//                 excluirVeiculo();
+//                 break;
+//             case 4:
+//                 consultarVeiculo();
+//                 break;
+//             case 5:
+//                 listarVeiculos();
+//                 break;
+//             case 6:
+//                 printf("Encerrando o programa.\n");
+//                 break;
+//             default:
+//                 printf("Opção inválida.\n");
+//         }
+//     } while (opcao != 6);
+
+//     return 0;
+// }
+
+// Questao 5
+
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+
+// #define ARQUIVO "filmes.dat"
+
+// typedef struct {
+//     int id;
+//     char titulo[50];
+//     char genero[20];
+//     int ano;
+// } Filme;
+
+// void adicionarFilme() {
+//     Filme filme;
+//     FILE *arquivo = fopen(ARQUIVO, "ab");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("ID do filme: ");
+//     scanf("%d", &filme.id);
+//     getchar(); // Limpar buffer
+//     printf("Título: ");
+//     fgets(filme.titulo, 50, stdin);
+//     filme.titulo[strcspn(filme.titulo, "\n")] = '\0';
+//     printf("Gênero: ");
+//     fgets(filme.genero, 20, stdin);
+//     filme.genero[strcspn(filme.genero, "\n")] = '\0';
+//     printf("Ano de lançamento: ");
+//     scanf("%d", &filme.ano);
+
+//     fwrite(&filme, sizeof(Filme), 1, arquivo);
+//     fclose(arquivo);
+//     printf("Filme adicionado com sucesso!\n");
+// }
+
+// void alterarFilme() {
+//     int id, encontrado = 0;
+//     Filme filme;
+//     FILE *arquivo = fopen(ARQUIVO, "rb+");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o ID do filme a ser alterado: ");
+//     scanf("%d", &id);
+//     while (fread(&filme, sizeof(Filme), 1, arquivo)) {
+//         if (filme.id == id) {
+//             encontrado = 1;
+//             printf("Novo título: ");
+//             getchar(); // Limpar buffer
+//             fgets(filme.titulo, 50, stdin);
+//             filme.titulo[strcspn(filme.titulo, "\n")] = '\0';
+//             printf("Novo gênero: ");
+//             fgets(filme.genero, 20, stdin);
+//             filme.genero[strcspn(filme.genero, "\n")] = '\0';
+//             printf("Novo ano de lançamento: ");
+//             scanf("%d", &filme.ano);
+
+//             fseek(arquivo, -sizeof(Filme), SEEK_CUR);
+//             fwrite(&filme, sizeof(Filme), 1, arquivo);
+//             printf("Filme alterado com sucesso!\n");
+//             break;
+//         }
+//     }
+//     fclose(arquivo);
+//     if (!encontrado) {
+//         printf("Filme não encontrado.\n");
+//     }
+// }
+
+// void excluirFilme() {
+//     int id, encontrado = 0;
+//     Filme filme;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     FILE *temp = fopen("temp.dat", "wb");
+//     if (!arquivo || !temp) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o ID do filme a ser excluído: ");
+//     scanf("%d", &id);
+//     while (fread(&filme, sizeof(Filme), 1, arquivo)) {
+//         if (filme.id == id) {
+//             encontrado = 1;
+//             continue; // Não copia o registro excluído
+//         }
+//         fwrite(&filme, sizeof(Filme), 1, temp);
+//     }
+//     fclose(arquivo);
+//     fclose(temp);
+
+//     remove(ARQUIVO);
+//     rename("temp.dat", ARQUIVO);
+
+//     if (encontrado) {
+//         printf("Filme excluído com sucesso!\n");
+//     } else {
+//         printf("Filme não encontrado.\n");
+//     }
+// }
+
+// void consultarFilme() {
+//     int id, encontrado = 0;
+//     Filme filme;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o ID do filme: ");
+//     scanf("%d", &id);
+//     while (fread(&filme, sizeof(Filme), 1, arquivo)) {
+//         if (filme.id == id) {
+//             encontrado = 1;
+//             printf("\nID: %d\n", filme.id);
+//             printf("Título: %s\n", filme.titulo);
+//             printf("Gênero: %s\n", filme.genero);
+//             printf("Ano de lançamento: %d\n", filme.ano);
+//             break;
+//         }
+//     }
+//     fclose(arquivo);
+//     if (!encontrado) {
+//         printf("Filme não encontrado.\n");
+//     }
+// }
+
+// void listarFilmes() {
+//     Filme filme;
+//     FILE *arquivo = fopen(ARQUIVO, "rb");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("\nLista de filmes cadastrados:\n");
+//     while (fread(&filme, sizeof(Filme), 1, arquivo)) {
+//         printf("\nID: %d\n", filme.id);
+//         printf("Título: %s\n", filme.titulo);
+//         printf("Gênero: %s\n", filme.genero);
+//         printf("Ano de lançamento: %d\n", filme.ano);
+//     }
+//     fclose(arquivo);
+// }
+
+// int main() {
+//     int opcao;
+//     do {
+//         printf("\nSistema de Controle de Filmes\n");
+//         printf("1. Adicionar filme\n");
+//         printf("2. Alterar filme\n");
+//         printf("3. Excluir filme\n");
+//         printf("4. Consultar filme pelo ID\n");
+//         printf("5. Listar filmes\n");
+//         printf("6. Sair\n");
+//         printf("Escolha uma opção: ");
+//         scanf("%d", &opcao);
+
+//         switch (opcao) {
+//             case 1:
+//                 adicionarFilme();
+//                 break;
+//             case 2:
+//                 alterarFilme();
+//                 break;
+//             case 3:
+//                 excluirFilme();
+//                 break;
+//             case 4:
+//                 consultarFilme();
+//                 break;
+//             case 5:
+//                 listarFilmes();
+//                 break;
+//             case 6:
+//                 printf("Encerrando o programa.\n");
+//                 break;
+//             default:
+//                 printf("Opção inválida.\n");
+//         }
+//     } while (opcao != 6);
+
+//     return 0;
+// }
+
+// Questao 6
+
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+
+// #define ARQUIVO "cidades.txt"
+
+// typedef struct {
+//     int codigo;
+//     char nome[50];
+//     char estado[30];
+//     int populacao;
+// } Cidade;
+
+// void incluirCidade() {
+//     Cidade cidade;
+//     FILE *arquivo = fopen(ARQUIVO, "a");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Código da cidade: ");
+//     scanf("%d", &cidade.codigo);
+//     getchar(); // Limpar buffer
+//     printf("Nome da cidade: ");
+//     fgets(cidade.nome, 50, stdin);
+//     cidade.nome[strcspn(cidade.nome, "\n")] = '\0';
+//     printf("Estado: ");
+//     fgets(cidade.estado, 30, stdin);
+//     cidade.estado[strcspn(cidade.estado, "\n")] = '\0';
+//     printf("População: ");
+//     scanf("%d", &cidade.populacao);
+
+//     fprintf(arquivo, "%d,%s,%s,%d\n", cidade.codigo, cidade.nome, cidade.estado, cidade.populacao);
+//     fclose(arquivo);
+//     printf("Cidade incluída com sucesso!\n");
+// }
+
+// void alterarCidade() {
+//     int codigo, encontrado = 0;
+//     Cidade cidade;
+//     FILE *arquivo = fopen(ARQUIVO, "r");
+//     FILE *temp = fopen("temp.txt", "w");
+//     if (!arquivo || !temp) {
+//         printf("Erro ao abrir os arquivos.\n");
+//         return;
+//     }
+
+//     printf("Informe o código da cidade a ser alterada: ");
+//     scanf("%d", &codigo);
+//     getchar(); // Limpar buffer
+
+//     while (fscanf(arquivo, "%d,%49[^,],%29[^,],%d\n", &cidade.codigo, cidade.nome, cidade.estado, &cidade.populacao) == 4) {
+//         if (cidade.codigo == codigo) {
+//             encontrado = 1;
+//             printf("Novo nome da cidade: ");
+//             fgets(cidade.nome, 50, stdin);
+//             cidade.nome[strcspn(cidade.nome, "\n")] = '\0';
+//             printf("Novo estado: ");
+//             fgets(cidade.estado, 30, stdin);
+//             cidade.estado[strcspn(cidade.estado, "\n")] = '\0';
+//             printf("Nova população: ");
+//             scanf("%d", &cidade.populacao);
+//             getchar(); // Limpar buffer
+//         }
+//         fprintf(temp, "%d,%s,%s,%d\n", cidade.codigo, cidade.nome, cidade.estado, cidade.populacao);
+//     }
+
+//     fclose(arquivo);
+//     fclose(temp);
+
+//     remove(ARQUIVO);
+//     rename("temp.txt", ARQUIVO);
+
+//     if (encontrado) {
+//         printf("Cidade alterada com sucesso!\n");
+//     } else {
+//         printf("Cidade não encontrada.\n");
+//     }
+// }
+
+// void excluirCidade() {
+//     int codigo, encontrado = 0;
+//     Cidade cidade;
+//     FILE *arquivo = fopen(ARQUIVO, "r");
+//     FILE *temp = fopen("temp.txt", "w");
+//     if (!arquivo || !temp) {
+//         printf("Erro ao abrir os arquivos.\n");
+//         return;
+//     }
+
+//     printf("Informe o código da cidade a ser excluída: ");
+//     scanf("%d", &codigo);
+
+//     while (fscanf(arquivo, "%d,%49[^,],%29[^,],%d\n", &cidade.codigo, cidade.nome, cidade.estado, &cidade.populacao) == 4) {
+//         if (cidade.codigo == codigo) {
+//             encontrado = 1;
+//             continue; // Não copia o registro excluído
+//         }
+//         fprintf(temp, "%d,%s,%s,%d\n", cidade.codigo, cidade.nome, cidade.estado, cidade.populacao);
+//     }
+
+//     fclose(arquivo);
+//     fclose(temp);
+
+//     remove(ARQUIVO);
+//     rename("temp.txt", ARQUIVO);
+
+//     if (encontrado) {
+//         printf("Cidade excluída com sucesso!\n");
+//     } else {
+//         printf("Cidade não encontrada.\n");
+//     }
+// }
+
+// void consultarCidade() {
+//     int codigo, encontrado = 0;
+//     Cidade cidade;
+//     FILE *arquivo = fopen(ARQUIVO, "r");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("Informe o código da cidade: ");
+//     scanf("%d", &codigo);
+
+//     while (fscanf(arquivo, "%d,%49[^,],%29[^,],%d\n", &cidade.codigo, cidade.nome, cidade.estado, &cidade.populacao) == 4) {
+//         if (cidade.codigo == codigo) {
+//             encontrado = 1;
+//             printf("\nCódigo: %d\n", cidade.codigo);
+//             printf("Nome: %s\n", cidade.nome);
+//             printf("Estado: %s\n", cidade.estado);
+//             printf("População: %d\n", cidade.populacao);
+//             break;
+//         }
+//     }
+
+//     fclose(arquivo);
+//     if (!encontrado) {
+//         printf("Cidade não encontrada.\n");
+//     }
+// }
+
+// void listarCidades() {
+//     Cidade cidade;
+//     FILE *arquivo = fopen(ARQUIVO, "r");
+//     if (!arquivo) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return;
+//     }
+
+//     printf("\nLista de cidades cadastradas:\n");
+//     while (fscanf(arquivo, "%d,%49[^,],%29[^,],%d\n", &cidade.codigo, cidade.nome, cidade.estado, &cidade.populacao) == 4) {
+//         printf("\nCódigo: %d\n", cidade.codigo);
+//         printf("Nome: %s\n", cidade.nome);
+//         printf("Estado: %s\n", cidade.estado);
+//         printf("População: %d\n", cidade.populacao);
+//     }
+//     fclose(arquivo);
+// }
+
+// int main() {
+//     int opcao;
+//     do {
+//         printf("\nSistema de Cadastro de Cidades\n");
+//         printf("1. Incluir cidade\n");
+//         printf("2. Alterar dados da cidade\n");
+//         printf("3. Excluir cidade\n");
+//         printf("4. Consultar cidade pelo código\n");
+//         printf("5. Listar cidades\n");
+//         printf("6. Sair\n");
+//         printf("Escolha uma opção: ");
+//         scanf("%d", &opcao);
+
+//         switch (opcao) {
+//             case 1:
+//                 incluirCidade();
+//                 break;
+//             case 2:
+//                 alterarCidade();
+//                 break;
+//             case 3:
+//                 excluirCidade();
+//                 break;
+//             case 4:
+//                 consultarCidade();
+//                 break;
+//             case 5:
+//                 listarCidades();
+//                 break;
+//             case 6:
+//                 printf("Encerrando o programa.\n");
+//                 break;
+//             default:
+//                 printf("Opção inválida.\n");
+//         }
+//     } while (opcao != 6);
+
+//     return 0;
+// }
